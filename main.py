@@ -30,6 +30,8 @@ for q in range(NUMBEROFWORDS):
 	choose_word()
 
 def show_text():
+	score_to_show = font.render(f"words: {no_typed}", True, (TEXT_COLOR))
+	screen.blit(score_to_show, (20, 20))
 	word_to_type = font.render(words[0], True, (255, 255, 255))
 	screen.blit(word_to_type, (get_space(" ".join(words)), 270))
 	text = font.render(" ".join(words[1:]), True, (TEXT_COLOR))
@@ -53,6 +55,7 @@ while running:
 			elif event.key == pygame.K_SPACE:
 				words.pop(0)
 				choose_word()
+				no_typed+=1
 	screen.fill(BACKGROUND_COLOR)
 	show_text()
 	pygame.display.update()
