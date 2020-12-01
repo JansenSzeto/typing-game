@@ -13,6 +13,7 @@ pygame.display.set_icon(icon)
 font = pygame.font.Font('RobotoMono-VariableFont_wght.ttf', 32)
 BACKGROUND_COLOR = (15, 31, 44)
 TEXT_COLOR = (86, 195, 183)
+NUMBEROFWORDS = 6
 
 running = True
 key = ""
@@ -23,11 +24,10 @@ def choose_word():
 	global words
 	f = open("words.txt", "r")
 	k = f.readlines()
-	words = []
-	for x in range(6):
-		words.append((k[random.randrange(1, 1000)])[:-1])
+	words.append((k[random.randrange(1, 1000)])[:-1])
 	f.close()
-choose_word()
+for q in range(NUMBEROFWORDS):
+	choose_word()
 
 def show_text():
 	word_to_type = font.render(words[0], True, (255, 255, 255))
@@ -51,10 +51,8 @@ while running:
 			if event.key == pygame.K_TAB:
 				choose_word()
 			elif event.key == pygame.K_SPACE:
-				if len(words) != 1:
-					words.pop(0)
-				else:
-					choose_word()
+				words.pop(0)
+				choose_word()
 	screen.fill(BACKGROUND_COLOR)
 	show_text()
 	pygame.display.update()
