@@ -14,6 +14,7 @@ pygame.display.set_icon(icon)
 font = pygame.font.Font('RobotoMono-VariableFont_wght.ttf', 32)
 BACKGROUND_COLOR = (15, 31, 44)
 TEXT_COLOR = (86, 195, 183)
+WRONG_COLOR = (252, 3, 3)
 NUMBEROFWORDS = 6
 
 running = True
@@ -21,6 +22,7 @@ key = ""
 words = []
 no_typed = 0
 character = 0
+correct = True
 
 def choose_word():
 	global character
@@ -34,13 +36,16 @@ for q in range(NUMBEROFWORDS):
 	choose_word()
 
 def show_text():
-	score_to_show = font.render(f"words: {no_typed}", True, (TEXT_COLOR))
+	score_to_show = font.render(f"words: {no_typed}", True, TEXT_COLOR)
 	screen.blit(score_to_show, (20, 20))
-	current = font.render(f"current: {words[0][character]}", True, (TEXT_COLOR))
+	current = font.render(f"current: {words[0][character]}", True, TEXT_COLOR)
 	screen.blit(current, (20, 50))
-	word_to_type = font.render(words[0], True, (255, 255, 255))
+	if correct:
+		word_to_type = font.render(words[0], True, (255, 255, 255))
+	else:
+		word_to_type = font.render(words[0], True, WRONG_COLOR)
 	screen.blit(word_to_type, (get_space("".join(words)), 270))
-	text = font.render("".join(words[1:]), True, (TEXT_COLOR))
+	text = font.render("".join(words[1:]), True, TEXT_COLOR)
 	screen.blit(text, (get_space_after(get_space("".join(words))), 270))
 
 def get_space(a):
@@ -57,14 +62,19 @@ while running:
 			running = False
 		if event.type == pygame.KEYDOWN:
 			if event.key == pygame.K_TAB:
-				choose_word()
+				words.clear()
+				for e in range(NUMBEROFWORDS):
+					choose_word()
 			elif translate.translate[event.key] == words[0][character]:
+				correct = True
 				if character+1 < len(words[0]):
 					character+=1
 				else:
 					words.pop(0)
 					choose_word()
 					no_typed+=1
+			else:
+				correct = False
 	screen.fill(BACKGROUND_COLOR)
 	show_text()
 	pygame.display.update()
